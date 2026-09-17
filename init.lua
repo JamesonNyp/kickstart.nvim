@@ -385,8 +385,11 @@ do
   vim.pack.add { gh 'folke/tokyonight.nvim' }
   ---@diagnostic disable-next-line: missing-fields
   require('tokyonight').setup {
+    transparent = true, -- Use the terminal's background instead of drawing one
     styles = {
       comments = { italic = false }, -- Disable italics in comments
+      sidebars = 'transparent',
+      floats = 'transparent',
     },
   }
 
@@ -444,6 +447,9 @@ do
   -- cursor location to LINE:COLUMN
   ---@diagnostic disable-next-line: duplicate-set-field
   statusline.section_location = function() return '%2l:%-2v' end
+
+  -- Show open buffers as tabs at the top of the window.
+  require('mini.tabline').setup { use_icons = vim.g.have_nerd_font }
 
   -- ... and there is more!
   --  Check out: https://github.com/nvim-mini/mini.nvim
