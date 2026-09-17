@@ -371,6 +371,7 @@ do
     spec = {
       { '<leader>s', group = '[S]earch', mode = { 'n', 'v' } },
       { '<leader>t', group = '[T]oggle' },
+      { '<leader>r', group = '[R]ender Markdown' },
       { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } }, -- Enable gitsigns recommended keymaps first
       { 'gr', group = 'LSP Actions', mode = { 'n' } },
     },
@@ -953,7 +954,46 @@ do
 end
 
 -- ============================================================
--- SECTION 10: OPTIONAL EXAMPLES / NEXT STEPS
+-- SECTION 10: MARKDOWN RENDERING
+-- Render Markdown headings, code blocks, tables, lists, and more in Neovim
+-- ============================================================
+do
+  vim.pack.add { gh 'MeanderingProgrammer/render-markdown.nvim' }
+
+  -- Experimental PR #665 fallback for table-cell wrapping. Keep this pinned to
+  -- an exact commit because the PR is unmerged and its branch may be force-pushed.
+  -- vim.pack.add {
+  --   {
+  --     src = gh 'okuuva/render-markdown.nvim',
+  --     version = '969b742657ff7a43a21ba52ab0f033b3161682d5',
+  --     name = 'render-markdown.nvim',
+  --   },
+  -- }
+  local render_markdown = require 'render-markdown'
+  render_markdown.setup {
+    -- Keep the cursor line rendered instead of revealing its raw Markdown syntax.
+    anti_conceal = {
+      enabled = false,
+    },
+    -- PR #665 table-cell wrapping configuration:
+    -- pipe_table = {
+    --   cell = 'padded',
+    --   max_table_width = 1.0,
+    -- },
+  }
+
+  vim.keymap.set('n', '<leader>rt', render_markdown.toggle, { desc = '[R]ender Markdown: [T]oggle globally' })
+  vim.keymap.set('n', '<leader>rb', render_markdown.buf_toggle, { desc = '[R]ender Markdown: Toggle [B]uffer' })
+  vim.keymap.set('n', '<leader>rp', render_markdown.preview, { desc = '[R]ender Markdown: [P]review' })
+  vim.keymap.set('n', '<leader>re', render_markdown.enable, { desc = '[R]ender Markdown: [E]nable globally' })
+  vim.keymap.set('n', '<leader>rd', render_markdown.disable, { desc = '[R]ender Markdown: [D]isable globally' })
+  vim.keymap.set('n', '<leader>rE', render_markdown.buf_enable, { desc = '[R]ender Markdown: [E]nable buffer' })
+  vim.keymap.set('n', '<leader>rD', render_markdown.buf_disable, { desc = '[R]ender Markdown: [D]isable buffer' })
+  vim.keymap.set('n', '<leader>rc', render_markdown.config, { desc = '[R]ender Markdown: Show [C]onfig' })
+end
+
+-- ============================================================
+-- SECTION 11: OPTIONAL EXAMPLES / NEXT STEPS
 -- kickstart.plugins.* examples
 -- ============================================================
 do
